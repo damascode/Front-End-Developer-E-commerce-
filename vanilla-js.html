@@ -11,26 +11,24 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             function hideWords(words) {
-                var elements = document.body.getElementsByTagName('*');
+                var textNodes = document.createTreeWalker(
+                    document.body,
+                    NodeFilter.SHOW_TEXT,
+                    null,
+                    false
+                );
 
-                for (var i = 0; i < elements.length; i++) {
-                    var element = elements[i];
-
-                    for (var j = 0; j < words.length; j++) {
-                        var word = words[j];
-                        var regex = new RegExp('\\b' + word + '\\b', 'gi');
-
-                        if (element.childNodes.length === 1 && element.childNodes[0].nodeType === Node.TEXT_NODE) {
-                            var newText = element.textContent.replace(regex, function(match) {
-                                return '<span style="display:none;">' + match + '</span>';
-                            });
-                            element.innerHTML = newText;
-                        }
+                var node;
+                while (node = textNodes.nextNode()) {
+                    var text = node.nodeValue;
+                    for (var i = 0; i < words.length; i++) {
+                        var regex = new RegExp('\\b' + words[i] + '\\b', 'gi');
+                        text = text.replace(regex, '');
                     }
+                    node.nodeValue = text;
                 }
             }
 
-            // Array of words you want to hide
             var wordsToHide = ['commercial'];
             
             hideWords(wordsToHide);
