@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hide Words</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            function hideWords(words) {
+                $('body').html(function(_, html) {
+                    words.forEach(word => {
+                        var regex = new RegExp('\\b' + word + '\\b', 'gi');
+                        html = html.replace(regex, '<span style="display:none;">' + word + '</span>');
+                    });
+                    return html;
+                });
+            }
+
+            // Insert the words you wish to hide  
+            var wordsToHide = ['commercial'];
+            
+            hideWords(wordsToHide);
+        });
+    </script>
+</head>
+<body>
+    <p>This is a commercial website.</p>
+</body>
+</html>
